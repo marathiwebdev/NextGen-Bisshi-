@@ -5,41 +5,51 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>NextGen Bisshi</title>
   <style>
-    body { font-family: Arial, sans-serif; background: #f4f4f4; text-align: center; padding: 20px; }
-    h1 { color: #2c3e50; }
-    .box { background: #fff; padding: 20px; margin: 10px auto; width: 300px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-    input { width: 90%; padding: 10px; margin: 8px 0; border: 1px solid #ccc; border-radius: 5px; }
-    button { padding: 10px 15px; margin: 5px; border: none; border-radius: 5px; cursor: pointer; }
+    body { font-family: Arial, sans-serif; background: #f4f4f4; text-align: center; padding: 20px; margin: 0; }
+    h1 { color: #2c3e50; font-size: 1.6rem; }
+    .box { background: #fff; padding: 20px; margin: 15px auto; width: 95%; max-width: 350px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.15); }
+    input { width: 90%; padding: 12px; margin: 10px 0; border: 1px solid #ccc; border-radius: 6px; font-size: 1rem; }
+    button { width: 95%; padding: 12px; margin: 8px 0; border: none; border-radius: 6px; font-size: 1rem; cursor: pointer; }
     button.signup { background: #27ae60; color: white; }
     button.login { background: #2980b9; color: white; }
     button.logout { background: #c0392b; color: white; }
-    #user-info { margin-top: 20px; font-weight: bold; }
+    #login-form { display: none; } /* hidden until user clicks Login */
+    #dashboard { display: none; }
+    #upi-box { margin-top: 20px; background: #eafaf1; padding: 15px; border-radius: 8px; font-size: 1.1rem; }
+    #upi-id { font-weight: bold; color: #27ae60; }
   </style>
 </head>
 <body>
-  <h1>🚀 Welcome to NextGen Bisshi</h1>
-  <p>Signup / Login below:</p>
+  <h1>🚀 NextGen Bisshi</h1>
 
   <!-- Signup Form -->
-  <div class="box">
+  <div class="box" id="signup-form">
     <h3>Signup</h3>
-    <input type="email" id="signup-email" placeholder="Email" />
-    <input type="password" id="signup-password" placeholder="Password" />
+    <input type="email" id="signup-email" placeholder="Enter Email" />
+    <input type="password" id="signup-password" placeholder="Enter Password" />
     <button class="signup" id="signup-btn">Signup</button>
   </div>
 
+  <!-- Login Button -->
+  <div class="box" id="login-toggle">
+    <button class="login" onclick="document.getElementById('login-form').style.display='block'; this.style.display='none';">Login</button>
+  </div>
+
   <!-- Login Form -->
-  <div class="box">
+  <div class="box" id="login-form">
     <h3>Login</h3>
-    <input type="email" id="login-email" placeholder="Email" />
-    <input type="password" id="login-password" placeholder="Password" />
+    <input type="email" id="login-email" placeholder="Enter Email" />
+    <input type="password" id="login-password" placeholder="Enter Password" />
     <button class="login" id="login-btn">Login</button>
   </div>
 
-  <!-- User Info -->
-  <div id="user-info" style="display:none;">
-    Logged in as: <span id="user-email"></span>  
-    <br><br>
+  <!-- Dashboard -->
+  <div class="box" id="dashboard">
+    <h3>Welcome, <span id="user-email"></span></h3>
+    <div id="upi-box">
+      💰 Contribute via UPI:  
+      <div id="upi-id">9112693374@kotak</div>
+    </div>
     <button class="logout" id="logout-btn">Logout</button>
   </div>
 
@@ -69,7 +79,7 @@
       const password = document.getElementById("signup-password").value;
       try {
         await createUserWithEmailAndPassword(auth, email, password);
-        alert("✅ Signup successful!");
+        alert("✅ Signup successful! Now you can login.");
       } catch (error) {
         alert("❌ " + error.message);
       }
@@ -96,10 +106,15 @@
     // Track user login state
     onAuthStateChanged(auth, (user) => {
       if (user) {
-        document.getElementById("user-info").style.display = "block";
+        document.getElementById("signup-form").style.display = "none";
+        document.getElementById("login-toggle").style.display = "none";
+        document.getElementById("login-form").style.display = "none";
+        document.getElementById("dashboard").style.display = "block";
         document.getElementById("user-email").innerText = user.email;
       } else {
-        document.getElementById("user-info").style.display = "none";
+        document.getElementById("signup-form").style.display = "block";
+        document.getElementById("login-toggle").style.display = "block";
+        document.getElementById("dashboard").style.display = "none";
       }
     });
   </script>
