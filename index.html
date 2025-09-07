@@ -14,26 +14,14 @@
       box-shadow:0 2px 5px rgba(0,0,0,0.08); position:sticky; top:0; z-index:1000;
     }
     .navbar h1 { font-size:1.2rem; margin:0; font-weight:600; color:#27ae60; }
-    .navbar nav a { margin-left:20px; text-decoration:none; color:#2c3e50; font-weight:500; }
-    .navbar nav a:hover { color:#27ae60; }
     /* Container */
     .container { padding:20px 30px; }
-    /* Stats */
-    .stats { display:flex; gap:20px; flex-wrap:wrap; margin-bottom:20px; }
-    .stat-card {
-      flex:1; min-width:200px; background:white; padding:20px; border-radius:10px;
-      border:1px solid #eaeaea; text-align:center;
-    }
-    .stat-card h3 { margin:0 0 10px; font-weight:500; }
-    .credit { border-top:4px solid #27ae60; }
-    .debit { border-top:4px solid #e74c3c; }
-    .balance { border-top:4px solid #3498db; }
-    /* Cards */
+    /* Card */
     .card {
       background:white; padding:20px; border-radius:10px; border:1px solid #eaeaea; margin-bottom:20px;
     }
     h2 { margin:0 0 15px; font-size:1.1rem; font-weight:600; }
-    input, textarea, select, button {
+    input, button {
       width:100%; padding:12px; margin:8px 0; border:1px solid #ccc; border-radius:6px; font-size:1rem;
       font-family:"Poppins",sans-serif;
     }
@@ -54,59 +42,21 @@
   <!-- Navbar -->
   <div class="navbar">
     <h1>NextGen Bisshi</h1>
-    <nav>
-      <a href="#dashboard">Dashboard</a>
-      <a href="#records">Records</a>
-      <a href="#transactions">Transactions</a>
-      <a href="#settings">Settings</a>
-    </nav>
   </div>
 
   <div class="container">
-    <!-- Stats -->
-    <div class="stats" id="dashboard">
-      <div class="stat-card credit">
-        <h3>Total Credit</h3>
-        <p id="total-credit">₹0</p>
-      </div>
-      <div class="stat-card debit">
-        <h3>Total Debit</h3>
-        <p id="total-debit">₹0</p>
-      </div>
-      <div class="stat-card balance">
-        <h3>Balance</h3>
-        <p id="balance">₹0</p>
-      </div>
-    </div>
-
     <!-- Add Record -->
-    <div class="card" id="records">
+    <div class="card">
       <h2>➕ Add New Record</h2>
-      <input type="text" id="record-title" placeholder="Enter Title">
-      <textarea id="record-message" placeholder="Enter Message"></textarea>
+      <input type="date" id="record-date">
+      <input type="text" id="record-name" placeholder="Enter Name">
+      <input type="number" id="record-amount" placeholder="Enter Amount (₹)">
       <button onclick="addRecord()">Save Record</button>
 
       <h2>📜 Records History</h2>
       <table>
-        <thead><tr><th>Title</th><th>Message</th><th>Time</th></tr></thead>
+        <thead><tr><th>Date</th><th>Name</th><th>Amount</th></tr></thead>
         <tbody id="record-list"></tbody>
-      </table>
-    </div>
-
-    <!-- Transactions -->
-    <div class="card" id="transactions">
-      <h2>💰 Add Transaction</h2>
-      <input type="number" id="amount" placeholder="Enter Amount (₹)">
-      <select id="type">
-        <option value="credit">Credit</option>
-        <option value="debit">Debit</option>
-      </select>
-      <button onclick="addTransaction()">Save Transaction</button>
-
-      <h2>📊 Transaction History</h2>
-      <table>
-        <thead><tr><th>Type</th><th>Amount</th><th>Time</th></tr></thead>
-        <tbody id="transaction-list"></tbody>
       </table>
     </div>
   </div>
@@ -131,12 +81,20 @@
 
     // Add Record
     async function addRecord() {
-      const title = document.getElementById("record-title").value;
-      const message = document.getElementById("record-message").value;
-      if (!title || !message) return alert("Fill all fields");
-      await addDoc(collection(db,"records"),{title,message,time:serverTimestamp()});
-      document.getElementById("record-title").value="";
-      document.getElementById("record-message").value="";
+      const date = document.getElementById("record-date").value;
+      const name = document.getElementById("record-name").value;
+      const amount = parseFloat(document.getElementById("record-amount").value);
+
+      if (!date || !name || !amount) return alert("⚠️ Please fill all fields");
+
+      await addDoc(collection(db,"records"),{
+        date,name,amount,time:serverTimestamp()
+      });
+
+      document.getElementById("record-date").value="";
+      document.getElementById("record-name").value="";
+      document.getElementById("record-amount").value="";
+
       loadRecords();
     }
 
@@ -148,49 +106,13 @@
       snapshot.forEach(doc=>{
         const r=doc.data();
         const tr=document.createElement("tr");
-        tr.innerHTML=`<td>${r.title}</td><td>${r.message}</td><td>${r.time?.toDate().toLocaleString()||""}</td>`;
+        tr.innerHTML=`<td>${r.date}</td><td>${r.name}</td><td>₹${r.amount}</td>`;
         list.appendChild(tr);
       });
     }
 
-    // Add Transaction
-    async function addTransaction() {
-      const amount=parseFloat(document.getElementById("amount").value);
-      const type=document.getElementById("type").value;
-      if (!amount||amount<=0) return alert("Enter valid amount");
-      await addDoc(collection(db,"transactions"),{amount,type,time:serverTimestamp()});
-      document.getElementById("amount").value="";
-      loadStats(); loadTransactions();
-    }
-
-    // Load Transactions
-    async function loadTransactions() {
-      const q=query(collection(db,"transactions"),orderBy("time","desc"));
-      const snapshot=await getDocs(q);
-      const list=document.getElementById("transaction-list"); list.innerHTML="";
-      snapshot.forEach(doc=>{
-        const t=doc.data();
-        const tr=document.createElement("tr");
-        tr.innerHTML=`<td>${t.type}</td><td>₹${t.amount}</td><td>${t.time?.toDate().toLocaleString()||""}</td>`;
-        list.appendChild(tr);
-      });
-    }
-
-    // Load Stats
-    async function loadStats() {
-      const snapshot=await getDocs(collection(db,"transactions"));
-      let credit=0,debit=0;
-      snapshot.forEach(doc=>{
-        const t=doc.data();
-        if (t.type==="credit") credit+=t.amount; else debit+=t.amount;
-      });
-      document.getElementById("total-credit").innerText="₹"+credit;
-      document.getElementById("total-debit").innerText="₹"+debit;
-      document.getElementById("balance").innerText="₹"+(credit-debit);
-    }
-
-    loadRecords(); loadTransactions(); loadStats();
-    window.addRecord=addRecord; window.addTransaction=addTransaction;
+    loadRecords();
+    window.addRecord=addRecord;
   </script>
 </body>
 </html>
