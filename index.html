@@ -3,127 +3,119 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>NextGen Bisshi - Admin</title>
-  <!-- Google Fonts Poppins -->
+  <title>NextGen Bisshi - Admin Dashboard</title>
+  <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
-    body { margin:0; font-family: "Poppins", Arial, sans-serif; background:#f5f7fa; }
-    .sidebar {
-      width:240px; background:#1e2a38; color:white; position:fixed; top:0; bottom:0; left:0;
-      display:flex; flex-direction:column; align-items:center; padding:20px 10px;
+    body { margin:0; font-family:"Poppins",sans-serif; background:#f9fafc; color:#2c3e50; }
+    /* Navbar */
+    .navbar {
+      background:#ffffff; padding:15px 30px; display:flex; justify-content:space-between; align-items:center;
+      box-shadow:0 2px 5px rgba(0,0,0,0.08); position:sticky; top:0; z-index:1000;
     }
-    .logo {
-      width:80px; height:80px; border-radius:50%; margin-bottom:15px; object-fit:cover;
-      border:2px solid #27ae60; background:white;
+    .navbar h1 { font-size:1.2rem; margin:0; font-weight:600; color:#27ae60; }
+    .navbar nav a { margin-left:20px; text-decoration:none; color:#2c3e50; font-weight:500; }
+    .navbar nav a:hover { color:#27ae60; }
+    /* Container */
+    .container { padding:20px 30px; }
+    /* Stats */
+    .stats { display:flex; gap:20px; flex-wrap:wrap; margin-bottom:20px; }
+    .stat-card {
+      flex:1; min-width:200px; background:white; padding:20px; border-radius:10px;
+      border:1px solid #eaeaea; text-align:center;
     }
-    .sidebar h2 { margin:0 0 20px; font-size:1.2rem; text-align:center; font-weight:600; }
-    .sidebar a {
-      color:white; padding:12px; margin:5px 0; text-decoration:none; display:block; border-radius:6px;
-      font-weight:500; width:100%; text-align:center;
-    }
-    .sidebar a:hover { background:#34495e; }
-    .main { margin-left:260px; padding:20px; }
-    header { background:white; padding:15px 20px; border-radius:8px; box-shadow:0 2px 5px rgba(0,0,0,0.1); margin-bottom:20px; }
-    h1 { margin:0; font-size:1.5rem; color:#2c3e50; font-weight:600; }
+    .stat-card h3 { margin:0 0 10px; font-weight:500; }
+    .credit { border-top:4px solid #27ae60; }
+    .debit { border-top:4px solid #e74c3c; }
+    .balance { border-top:4px solid #3498db; }
+    /* Cards */
     .card {
-      background:white; padding:20px; border-radius:10px;
-      box-shadow:0 2px 8px rgba(0,0,0,0.1); margin-bottom:20px;
+      background:white; padding:20px; border-radius:10px; border:1px solid #eaeaea; margin-bottom:20px;
     }
-    h2 { font-size:1.2rem; font-weight:600; color:#2c3e50; margin-bottom:10px; }
+    h2 { margin:0 0 15px; font-size:1.1rem; font-weight:600; }
     input, textarea, select, button {
-      width:100%; padding:12px; margin:10px 0; border-radius:6px; border:1px solid #ccc; font-size:1rem;
-      font-family:"Poppins", sans-serif;
+      width:100%; padding:12px; margin:8px 0; border:1px solid #ccc; border-radius:6px; font-size:1rem;
+      font-family:"Poppins",sans-serif;
     }
     button {
-      background:#27ae60; color:white; border:none; cursor:pointer; font-weight:500; transition:0.3s;
+      background:#27ae60; color:white; border:none; cursor:pointer; font-weight:500;
     }
     button:hover { background:#219150; }
-    ul { padding-left:20px; }
-    .record-item { background:#f9fafc; padding:12px; border-radius:6px; margin-bottom:10px; border-left:5px solid #3498db; }
-    .stats {
-      display:flex; gap:20px; flex-wrap:wrap;
+    /* Table */
+    table { width:100%; border-collapse:collapse; margin-top:10px; }
+    th, td {
+      padding:12px; border-bottom:1px solid #eaeaea; text-align:left;
     }
-    .stat-box {
-      flex:1; min-width:200px; background:#ecf6ff; padding:15px; border-radius:8px; text-align:center;
-      box-shadow:0 2px 5px rgba(0,0,0,0.1);
-    }
-    .stat-box h3 { margin:5px 0; color:#2c3e50; }
-    .stat-credit { border-left:5px solid #27ae60; }
-    .stat-debit { border-left:5px solid #e74c3c; }
-    .stat-balance { border-left:5px solid #3498db; }
-    @media(max-width:768px) {
-      .sidebar { width:100%; height:auto; position:relative; flex-direction:row; justify-content:space-around; }
-      .main { margin-left:0; }
-    }
+    th { background:#f4f6f8; font-weight:600; }
+    tr:hover { background:#f9f9f9; }
   </style>
 </head>
 <body>
-  <!-- Sidebar -->
-  <div class="sidebar">
-    <img src="IMG_0161.jpg" alt="Logo" class="logo">
-    <h2>📊 Admin</h2>
-    <a href="#dashboard">Dashboard</a>
-    <a href="#add">Add Record</a>
-    <a href="#transactions">Debit/Credit</a>
-    <a href="#history">History</a>
-    <a href="#settings">Settings</a>
+  <!-- Navbar -->
+  <div class="navbar">
+    <h1>NextGen Bisshi</h1>
+    <nav>
+      <a href="#dashboard">Dashboard</a>
+      <a href="#records">Records</a>
+      <a href="#transactions">Transactions</a>
+      <a href="#settings">Settings</a>
+    </nav>
   </div>
 
-  <!-- Main Content -->
-  <div class="main">
-    <header>
-      <h1>NextGen Bisshi - Admin Dashboard</h1>
-    </header>
-
-    <!-- Dashboard Stats -->
-    <div class="stats">
-      <div class="stat-box stat-credit">
+  <div class="container">
+    <!-- Stats -->
+    <div class="stats" id="dashboard">
+      <div class="stat-card credit">
         <h3>Total Credit</h3>
         <p id="total-credit">₹0</p>
       </div>
-      <div class="stat-box stat-debit">
+      <div class="stat-card debit">
         <h3>Total Debit</h3>
         <p id="total-debit">₹0</p>
       </div>
-      <div class="stat-box stat-balance">
+      <div class="stat-card balance">
         <h3>Balance</h3>
         <p id="balance">₹0</p>
       </div>
     </div>
 
     <!-- Add Record -->
-    <div class="card" id="add">
+    <div class="card" id="records">
       <h2>➕ Add New Record</h2>
-      <input type="text" id="record-title" placeholder="Enter Title" />
+      <input type="text" id="record-title" placeholder="Enter Title">
       <textarea id="record-message" placeholder="Enter Message"></textarea>
-      <button onclick="addRecord()">Send Record</button>
+      <button onclick="addRecord()">Save Record</button>
+
+      <h2>📜 Records History</h2>
+      <table>
+        <thead><tr><th>Title</th><th>Message</th><th>Time</th></tr></thead>
+        <tbody id="record-list"></tbody>
+      </table>
     </div>
 
-    <!-- Debit / Credit Section -->
+    <!-- Transactions -->
     <div class="card" id="transactions">
       <h2>💰 Add Transaction</h2>
-      <input type="number" id="amount" placeholder="Enter Amount (₹)" />
+      <input type="number" id="amount" placeholder="Enter Amount (₹)">
       <select id="type">
         <option value="credit">Credit</option>
         <option value="debit">Debit</option>
       </select>
       <button onclick="addTransaction()">Save Transaction</button>
-    </div>
 
-    <!-- Records History -->
-    <div class="card" id="history">
-      <h2>📜 Records History</h2>
-      <ul id="record-list"></ul>
+      <h2>📊 Transaction History</h2>
+      <table>
+        <thead><tr><th>Type</th><th>Amount</th><th>Time</th></tr></thead>
+        <tbody id="transaction-list"></tbody>
+      </table>
     </div>
   </div>
 
-  <!-- Firebase SDK -->
+  <!-- Firebase -->
   <script type="module">
-    // Import Firebase SDK
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-app.js";
     import { getFirestore, collection, addDoc, getDocs, serverTimestamp, query, orderBy } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-firestore.js";
 
-    // Firebase Config
     const firebaseConfig = {
       apiKey: "AIzaSyC4TRM5wNy3BzXV9keTmJmgnkJOe4WRKLA",
       authDomain: "nextgen-bisshi.firebaseapp.com",
@@ -134,7 +126,6 @@
       measurementId: "G-VQ88TQ68LJ"
     };
 
-    // Initialize Firebase
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
 
@@ -142,66 +133,64 @@
     async function addRecord() {
       const title = document.getElementById("record-title").value;
       const message = document.getElementById("record-message").value;
-      if (!title || !message) { alert("Fill all fields"); return; }
-      try {
-        await addDoc(collection(db, "records"), { title, message, time: serverTimestamp() });
-        alert("✅ Record saved!");
-        document.getElementById("record-title").value = "";
-        document.getElementById("record-message").value = "";
-        loadRecords();
-      } catch (e) { alert("❌ Error: " + e.message); }
-    }
-
-    // Add Transaction
-    async function addTransaction() {
-      const amount = parseFloat(document.getElementById("amount").value);
-      const type = document.getElementById("type").value;
-      if (!amount || amount <= 0) { alert("Enter valid amount"); return; }
-      try {
-        await addDoc(collection(db, "transactions"), { amount, type, time: serverTimestamp() });
-        alert("✅ Transaction saved!");
-        document.getElementById("amount").value = "";
-        loadStats();
-      } catch (e) { alert("❌ Error: " + e.message); }
+      if (!title || !message) return alert("Fill all fields");
+      await addDoc(collection(db,"records"),{title,message,time:serverTimestamp()});
+      document.getElementById("record-title").value="";
+      document.getElementById("record-message").value="";
+      loadRecords();
     }
 
     // Load Records
     async function loadRecords() {
-      const q = query(collection(db, "records"), orderBy("time", "desc"));
-      const querySnapshot = await getDocs(q);
-      const list = document.getElementById("record-list");
-      list.innerHTML = "";
-      querySnapshot.forEach((doc) => {
-        const r = doc.data();
-        const li = document.createElement("li");
-        li.className = "record-item";
-        li.innerHTML = `<b>${r.title}</b><br>${r.message}<br><small>${r.time?.toDate().toLocaleString() || ""}</small>`;
-        list.appendChild(li);
+      const q=query(collection(db,"records"),orderBy("time","desc"));
+      const snapshot=await getDocs(q);
+      const list=document.getElementById("record-list"); list.innerHTML="";
+      snapshot.forEach(doc=>{
+        const r=doc.data();
+        const tr=document.createElement("tr");
+        tr.innerHTML=`<td>${r.title}</td><td>${r.message}</td><td>${r.time?.toDate().toLocaleString()||""}</td>`;
+        list.appendChild(tr);
+      });
+    }
+
+    // Add Transaction
+    async function addTransaction() {
+      const amount=parseFloat(document.getElementById("amount").value);
+      const type=document.getElementById("type").value;
+      if (!amount||amount<=0) return alert("Enter valid amount");
+      await addDoc(collection(db,"transactions"),{amount,type,time:serverTimestamp()});
+      document.getElementById("amount").value="";
+      loadStats(); loadTransactions();
+    }
+
+    // Load Transactions
+    async function loadTransactions() {
+      const q=query(collection(db,"transactions"),orderBy("time","desc"));
+      const snapshot=await getDocs(q);
+      const list=document.getElementById("transaction-list"); list.innerHTML="";
+      snapshot.forEach(doc=>{
+        const t=doc.data();
+        const tr=document.createElement("tr");
+        tr.innerHTML=`<td>${t.type}</td><td>₹${t.amount}</td><td>${t.time?.toDate().toLocaleString()||""}</td>`;
+        list.appendChild(tr);
       });
     }
 
     // Load Stats
     async function loadStats() {
-      const q = query(collection(db, "transactions"), orderBy("time", "desc"));
-      const querySnapshot = await getDocs(q);
-      let credit = 0, debit = 0;
-      querySnapshot.forEach((doc) => {
-        const t = doc.data();
-        if (t.type === "credit") credit += t.amount;
-        else debit += t.amount;
+      const snapshot=await getDocs(collection(db,"transactions"));
+      let credit=0,debit=0;
+      snapshot.forEach(doc=>{
+        const t=doc.data();
+        if (t.type==="credit") credit+=t.amount; else debit+=t.amount;
       });
-      document.getElementById("total-credit").innerText = "₹" + credit;
-      document.getElementById("total-debit").innerText = "₹" + debit;
-      document.getElementById("balance").innerText = "₹" + (credit - debit);
+      document.getElementById("total-credit").innerText="₹"+credit;
+      document.getElementById("total-debit").innerText="₹"+debit;
+      document.getElementById("balance").innerText="₹"+(credit-debit);
     }
 
-    // Load Data on Start
-    loadRecords();
-    loadStats();
-
-    // Expose functions
-    window.addRecord = addRecord;
-    window.addTransaction = addTransaction;
+    loadRecords(); loadTransactions(); loadStats();
+    window.addRecord=addRecord; window.addTransaction=addTransaction;
   </script>
 </body>
 </html>
