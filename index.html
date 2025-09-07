@@ -5,98 +5,106 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>NextGen Bisshi</title>
   <style>
-    body { font-family: Arial, sans-serif; background: #f4f4f4; text-align: center; padding: 20px; margin: 0; }
-    h1 { color: #2c3e50; font-size: 1.6rem; }
-    .box { background: #fff; padding: 20px; margin: 15px auto; width: 95%; max-width: 400px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.15); }
-    input, textarea { width: 90%; padding: 12px; margin: 10px 0; border: 1px solid #ccc; border-radius: 6px; font-size: 1rem; }
-    button { width: 95%; padding: 12px; margin: 8px 0; border: none; border-radius: 6px; font-size: 1rem; cursor: pointer; }
-    button.signup { background: #27ae60; color: white; }
-    button.login { background: #2980b9; color: white; }
-    button.logout { background: #c0392b; color: white; }
-    button.copy { background: #16a085; color: white; }
-    button.fund { background: #8e44ad; color: white; }
-    #login-form { display: none; }
-    #dashboard { display: none; }
-    #upi-box { margin-top: 20px; background: #eafaf1; padding: 15px; border-radius: 8px; font-size: 1.1rem; }
-    #upi-id { font-weight: bold; color: #27ae60; }
-    .profile, .history, .payout { text-align: left; margin: 15px 0; }
-    ul { text-align: left; padding-left: 20px; }
-    .timer { font-weight: bold; color: red; }
+    body { margin:0; font-family: "Segoe UI", Arial, sans-serif; background:#f9fafb; color:#333; }
+    header { background:#004643; color:white; padding:15px 20px; display:flex; justify-content:space-between; align-items:center; }
+    header h1 { margin:0; font-size:1.3rem; }
+    header button { background:#e16162; color:white; border:none; padding:8px 16px; border-radius:6px; cursor:pointer; }
+    .container { max-width:1100px; margin:20px auto; padding:10px; }
+    .card { background:white; border-radius:10px; box-shadow:0 4px 12px rgba(0,0,0,0.1); padding:20px; margin-bottom:20px; }
+    h2,h3,h4 { margin-top:0; color:#004643; }
+    input, button, select { width:100%; padding:12px; margin:10px 0; border-radius:6px; border:1px solid #ccc; font-size:1rem; }
+    button { cursor:pointer; transition:0.2s; }
+    button:hover { opacity:0.9; }
+    .btn-primary { background:#2a9d8f; color:white; border:none; }
+    .btn-secondary { background:#e9c46a; border:none; }
+    .btn-danger { background:#e16162; color:white; border:none; }
+    .grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:20px; }
+    .profile p { margin:6px 0; }
+    ul { padding-left:20px; }
+    .timer { font-weight:bold; color:#e16162; }
+    #login-form, #dashboard { display:none; }
+    #fund-section { margin-top:15px; padding:15px; border:1px dashed #ccc; border-radius:8px; background:#f4fdfc; }
   </style>
 </head>
 <body>
-  <h1>🚀 NextGen Bisshi</h1>
+  <header>
+    <h1>NextGen Bisshi</h1>
+    <button id="logout-btn" style="display:none;">Logout</button>
+  </header>
 
-  <!-- Signup Form -->
-  <div class="box" id="signup-form">
-    <h3>Signup</h3>
-    <input type="text" id="signup-name" placeholder="Full Name" />
-    <input type="text" id="signup-mobile" placeholder="Mobile Number" />
-    <input type="email" id="signup-email" placeholder="Email" />
-    <input type="password" id="signup-password" placeholder="Password" />
-    <button class="signup" id="signup-btn">Signup</button>
-  </div>
+  <div class="container">
 
-  <!-- Login Toggle -->
-  <div class="box" id="login-toggle">
-    <button class="login" onclick="document.getElementById('login-form').style.display='block'; this.style.display='none';">Login</button>
-  </div>
-
-  <!-- Login Form -->
-  <div class="box" id="login-form">
-    <h3>Login</h3>
-    <input type="email" id="login-email" placeholder="Email" />
-    <input type="password" id="login-password" placeholder="Password" />
-    <button class="login" id="login-btn">Login</button>
-  </div>
-
-  <!-- Dashboard -->
-  <div class="box" id="dashboard">
-    <h3>Welcome, <span id="user-name"></span></h3>
-
-    <!-- Profile -->
-    <div class="profile">
-      <p><b>Email:</b> <span id="user-email"></span></p>
-      <p><b>Mobile:</b> <span id="user-mobile"></span></p>
+    <!-- Signup Form -->
+    <div class="card" id="signup-form">
+      <h2>Create Account</h2>
+      <input type="text" id="signup-name" placeholder="Full Name" />
+      <input type="text" id="signup-mobile" placeholder="Mobile Number" />
+      <input type="email" id="signup-email" placeholder="Email" />
+      <input type="password" id="signup-password" placeholder="Password" />
+      <button class="btn-primary" id="signup-btn">Signup</button>
     </div>
 
-    <!-- Contribution History -->
-    <div class="history">
-      <h4>📜 Contribution History</h4>
-      <ul id="contributions"></ul>
+    <!-- Login Toggle -->
+    <div class="card" id="login-toggle">
+      <button class="btn-secondary" onclick="document.getElementById('login-form').style.display='block'; this.style.display='none';">Already have an account? Login</button>
     </div>
 
-    <!-- Next Payout -->
-    <div class="payout">
-      <h4>🎉 Next Payout Date:</h4>
-      <p id="payout-date">7 oct 2025</p>
+    <!-- Login Form -->
+    <div class="card" id="login-form">
+      <h2>Login</h2>
+      <input type="email" id="login-email" placeholder="Email" />
+      <input type="password" id="login-password" placeholder="Password" />
+      <button class="btn-primary" id="login-btn">Login</button>
     </div>
 
-    <!-- Add Fund -->
-    <div id="upi-box">
-      💰 Contribute via UPI:
-      <div id="upi-id">9112693374@kotak811</div>
-      <button class="copy" id="copy-upi">📋 Copy UPI ID</button>
-      <br><br>
-      <button class="fund" id="start-fund">Add Fund</button>
-      <div id="fund-section" style="display:none;">
-        <p class="timer" id="countdown">10:00</p>
-        <input type="text" id="txn-id" placeholder="Enter Transaction ID" />
-        <input type="file" id="screenshot" accept="image/*" />
-        <button class="fund" id="submit-fund">Submit</button>
+    <!-- Dashboard -->
+    <div id="dashboard">
+      <div class="grid">
+        <!-- Profile -->
+        <div class="card profile">
+          <h3>👤 Profile</h3>
+          <p><b>Name:</b> <span id="user-name"></span></p>
+          <p><b>Email:</b> <span id="user-email"></span></p>
+          <p><b>Mobile:</b> <span id="user-mobile"></span></p>
+        </div>
+
+        <!-- Contribution History -->
+        <div class="card">
+          <h3>📜 Contribution History</h3>
+          <ul id="contributions"></ul>
+        </div>
+
+        <!-- Payout -->
+        <div class="card">
+          <h3>🎉 Next Payout</h3>
+          <p id="payout-date">15 Sept 2025</p>
+        </div>
+
+        <!-- Add Fund -->
+        <div class="card">
+          <h3>💰 Add Fund</h3>
+          <p>Send via UPI:</p>
+          <p><b id="upi-id">9112693374@kotak811</b></p>
+          <button class="btn-secondary" id="copy-upi">📋 Copy UPI ID</button>
+          <button class="btn-primary" id="start-fund">Start Contribution</button>
+          <div id="fund-section" style="display:none;">
+            <p class="timer" id="countdown">10:00</p>
+            <input type="text" id="txn-id" placeholder="Enter Transaction ID" />
+            <input type="file" id="screenshot" accept="image/*" />
+            <button class="btn-primary" id="submit-fund">Submit</button>
+          </div>
+        </div>
       </div>
     </div>
-
-    <br>
-    <button class="logout" id="logout-btn">Logout</button>
   </div>
 
+  <!-- Firebase Script -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-    import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, updateProfile } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+    import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
     import { getFirestore, setDoc, doc, getDoc, updateDoc, arrayUnion } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-    // Firebase config
+    // Config
     const firebaseConfig = {
       apiKey: "AIzaSyC4TRM5wNy3BzXV9keTmJmgnkJOe4WRKLA",
       authDomain: "nextgen-bisshi.firebaseapp.com",
@@ -117,16 +125,11 @@
       const mobile = document.getElementById("signup-mobile").value;
       const email = document.getElementById("signup-email").value;
       const password = document.getElementById("signup-password").value;
-
       try {
         const userCred = await createUserWithEmailAndPassword(auth, email, password);
-        await setDoc(doc(db, "users", userCred.user.uid), {
-          name, mobile, email, contributions: []
-        });
+        await setDoc(doc(db, "users", userCred.user.uid), { name, mobile, email, contributions: [] });
         alert("✅ Signup successful! Now login.");
-      } catch (error) {
-        alert("❌ " + error.message);
-      }
+      } catch (err) { alert(err.message); }
     });
 
     // Login
@@ -135,97 +138,83 @@
       const password = document.getElementById("login-password").value;
       try {
         await signInWithEmailAndPassword(auth, email, password);
-        alert("✅ Login successful!");
-      } catch (error) {
-        alert("❌ " + error.message);
-      }
+      } catch (err) { alert(err.message); }
     });
 
     // Logout
     document.getElementById("logout-btn").addEventListener("click", async () => {
       await signOut(auth);
-      alert("👋 Logged out");
     });
 
     // Copy UPI
     document.getElementById("copy-upi").addEventListener("click", () => {
-      const upi = document.getElementById("upi-id").innerText;
-      navigator.clipboard.writeText(upi).then(() => {
-        alert("📋 UPI ID copied: " + upi);
-      });
+      navigator.clipboard.writeText(document.getElementById("upi-id").innerText);
+      alert("📋 UPI copied!");
     });
 
-    // Start Fund Button
+    // Start Fund
     document.getElementById("start-fund").addEventListener("click", () => {
       document.getElementById("fund-section").style.display = "block";
-      startCountdown(600); // 10 minutes
+      startCountdown(600);
     });
 
     // Submit Fund
     document.getElementById("submit-fund").addEventListener("click", async () => {
       const txnId = document.getElementById("txn-id").value;
-      if (!txnId) { alert("Enter Transaction ID"); return; }
-
+      if (!txnId) return alert("Enter Transaction ID");
       const user = auth.currentUser;
       if (user) {
-        const userRef = doc(db, "users", user.uid);
-        const date = new Date().toLocaleString();
-        await updateDoc(userRef, {
-          contributions: arrayUnion({ txnId, date })
-        });
-        alert("✅ Fund submitted! Awaiting admin approval.");
-        document.getElementById("txn-id").value = "";
-        document.getElementById("fund-section").style.display = "none";
-        loadUserProfile(user.uid);
+        await updateDoc(doc(db, "users", user.uid), { contributions: arrayUnion({ txnId, date: new Date().toLocaleString() }) });
+        alert("✅ Fund submitted!");
+        loadProfile(user.uid);
       }
     });
 
-    // Timer
-    function startCountdown(seconds) {
+    // Countdown
+    function startCountdown(sec) {
+      let remaining = sec;
       const timerEl = document.getElementById("countdown");
-      let remaining = seconds;
       const interval = setInterval(() => {
-        const min = String(Math.floor(remaining / 60)).padStart(2, '0');
-        const sec = String(remaining % 60).padStart(2, '0');
-        timerEl.textContent = `${min}:${sec}`;
-        if (--remaining < 0) {
-          clearInterval(interval);
-          timerEl.textContent = "⏰ Time expired!";
-        }
-      }, 1000);
+        const m = String(Math.floor(remaining/60)).padStart(2,'0');
+        const s = String(remaining%60).padStart(2,'0');
+        timerEl.textContent = `${m}:${s}`;
+        if (--remaining < 0) { clearInterval(interval); timerEl.textContent="⏰ Expired"; }
+      },1000);
     }
 
-    // Load User Profile
-    async function loadUserProfile(uid) {
-      const snap = await getDoc(doc(db, "users", uid));
+    // Load Profile
+    async function loadProfile(uid) {
+      const snap = await getDoc(doc(db,"users",uid));
       if (snap.exists()) {
-        const data = snap.data();
-        document.getElementById("user-name").innerText = data.name;
-        document.getElementById("user-email").innerText = data.email;
-        document.getElementById("user-mobile").innerText = data.mobile;
-
+        const d = snap.data();
+        document.getElementById("user-name").innerText = d.name;
+        document.getElementById("user-email").innerText = d.email;
+        document.getElementById("user-mobile").innerText = d.mobile;
         const list = document.getElementById("contributions");
-        list.innerHTML = "";
-        data.contributions.forEach(c => {
-          const li = document.createElement("li");
-          li.textContent = `Txn: ${c.txnId} | Date: ${c.date}`;
+        list.innerHTML="";
+        d.contributions.forEach(c=>{
+          const li=document.createElement("li");
+          li.textContent=`Txn ${c.txnId} | ${c.date}`;
           list.appendChild(li);
         });
       }
     }
 
     // Auth State
-    onAuthStateChanged(auth, async (user) => {
+    onAuthStateChanged(auth, user => {
       if (user) {
-        document.getElementById("signup-form").style.display = "none";
-        document.getElementById("login-toggle").style.display = "none";
-        document.getElementById("login-form").style.display = "none";
-        document.getElementById("dashboard").style.display = "block";
-        loadUserProfile(user.uid);
+        document.getElementById("signup-form").style.display="none";
+        document.getElementById("login-toggle").style.display="none";
+        document.getElementById("login-form").style.display="none";
+        document.getElementById("dashboard").style.display="block";
+        document.getElementById("logout-btn").style.display="inline-block";
+        loadProfile(user.uid);
       } else {
-        document.getElementById("signup-form").style.display = "block";
-        document.getElementById("login-toggle").style.display = "block";
-        document.getElementById("dashboard").style.display = "none";
+        document.getElementById("signup-form").style.display="block";
+        document.getElementById("login-toggle").style.display="block";
+        document.getElementById("login-form").style.display="none";
+        document.getElementById("dashboard").style.display="none";
+        document.getElementById("logout-btn").style.display="none";
       }
     });
   </script>
