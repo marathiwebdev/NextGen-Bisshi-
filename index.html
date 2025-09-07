@@ -1,118 +1,136 @@
 <!DOCTYPE html>
-<html lang="mr">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>🚩 NextGen Bisshi 🚩</title>
+  <title>NextGen Bisshi</title>
+
   <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+
   <style>
-    body { margin:0; font-family:"Poppins",sans-serif; background:#f7f9fb; color:#2c3e50; }
-    /* Header */
-    .header {
-      background:#2c3e50; color:white; padding:15px; text-align:center;
-      font-weight:600; font-size:1.4rem; box-shadow:0 2px 5px rgba(0,0,0,0.15);
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: #f2f7f4;
+      margin: 0;
+      padding: 0;
+      color: #2c3e50;
     }
-    .header img { height:40px; vertical-align:middle; margin-right:10px; }
-    /* Container */
-    .container { padding:20px; max-width:1100px; margin:auto; }
-    /* Summary Cards */
-    .summary { display:flex; gap:15px; flex-wrap:wrap; margin-bottom:20px; }
-    .card-summary {
-      flex:1; min-width:200px; background:#fff; padding:20px; border-radius:12px;
-      text-align:center; font-size:1.1rem; font-weight:600; box-shadow:0 2px 6px rgba(0,0,0,0.05);
+    header {
+      background: #6ab04c;
+      color: white;
+      text-align: center;
+      padding: 15px;
+      font-size: 22px;
+      font-weight: bold;
     }
-    .credit { border-top:5px solid #27ae60; color:#27ae60; }
-    .debit { border-top:5px solid #e74c3c; color:#e74c3c; }
-    .balance { border-top:5px solid #2980b9; color:#2980b9; }
-    /* Input Card */
-    .card {
-      background:#fff; padding:20px; border-radius:12px;
-      margin-bottom:20px; box-shadow:0 2px 6px rgba(0,0,0,0.05);
+    .container {
+      max-width: 800px;
+      margin: 20px auto;
+      padding: 20px;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
     }
-    h2 { margin:0 0 15px; font-size:1.1rem; font-weight:600; color:#34495e; }
+    .balance-box {
+      display: flex;
+      justify-content: space-between;
+      background: #dff9fb;
+      padding: 15px;
+      border-radius: 8px;
+      font-weight: 600;
+      margin-bottom: 20px;
+    }
     input, select, button {
-      width:100%; padding:12px; margin:8px 0; border:1px solid #ccc; border-radius:6px; font-size:1rem;
-      font-family:"Poppins",sans-serif;
+      width: 100%;
+      padding: 10px;
+      margin: 8px 0;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-family: inherit;
     }
     button {
-      background:#27ae60; color:white; border:none; cursor:pointer; font-weight:600;
-      transition:all 0.2s ease;
+      background: #6ab04c;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.3s;
     }
-    button:hover { background:#219150; }
-    /* Table */
-    table { width:100%; border-collapse:collapse; margin-top:10px; background:#fff; }
+    button:hover {
+      background: #27ae60;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 15px;
+    }
+    table, th, td {
+      border: 1px solid #ddd;
+    }
     th, td {
-      padding:12px; border:1px solid #eee; text-align:center; font-size:0.95rem;
+      padding: 10px;
+      text-align: center;
     }
-    th { background:#f4f6f9; color:#34495e; }
-    tr:nth-child(even) { background:#fafafa; }
-    .type-credit { color:#27ae60; font-weight:600; }
-    .type-debit { color:#e74c3c; font-weight:600; }
-    /* Toast */
-    .toast {
-      visibility:hidden; min-width:200px; margin-left:-100px; background:#333; color:#fff;
-      text-align:center; border-radius:6px; padding:12px; position:fixed; z-index:1;
-      left:50%; bottom:30px; font-size:0.9rem; opacity:0; transition:opacity 0.5s, bottom 0.5s;
+    th {
+      background: #6ab04c;
+      color: white;
     }
-    .toast.show {
-      visibility:visible; opacity:1; bottom:50px;
+    .credit {
+      color: green;
+      font-weight: bold;
     }
-    /* Responsive */
-    @media(max-width:600px){
-      .summary { flex-direction:column; }
-      th, td { padding:8px; font-size:0.85rem; }
+    .debit {
+      color: red;
+      font-weight: bold;
     }
   </style>
 </head>
 <body>
-  <!-- Header -->
-  <div class="header">
-    <img src="IMG_0161" alt="Logo"> 🚩 NextGen Bisshi 🚩
-  </div>
+  <header>NextGen Bisshi</header>
 
   <div class="container">
-    <!-- Summary -->
-    <div class="summary">
-      <div class="card-summary credit">एकूण आवक (Credit): <br><span id="total-credit">₹0</span></div>
-      <div class="card-summary debit">एकूण खर्च (Debit): <br><span id="total-debit">₹0</span></div>
-      <div class="card-summary balance">शिल्लक (Balance): <br><span id="total-balance">₹0</span></div>
+    <!-- Balance Section -->
+    <div class="balance-box">
+      <div>Total Balance: ₹<span id="totalBalance">0</span></div>
+      <div>Remaining Balance: ₹<span id="remainingBalance">0</span></div>
     </div>
 
-    <!-- Add Record -->
-    <div class="card">
-      <h2>➕ नवीन नोंद जोडा</h2>
-      <input type="date" id="record-date">
-      <input type="text" id="record-name" placeholder="नाव लिहा">
-      <input type="number" id="record-amount" placeholder="रक्कम (₹)">
-      <select id="record-type">
-        <option value="credit">आवक (Credit)</option>
-        <option value="debit">खर्च (Debit)</option>
-      </select>
-      <button id="save-btn">💾 जतन करा</button>
-    </div>
+    <!-- Add Record Form -->
+    <h3>Add Transaction</h3>
+    <input type="date" id="date" />
+    <input type="text" id="name" placeholder="Enter Name" />
+    <input type="number" id="amount" placeholder="Enter Amount" />
+    <select id="type">
+      <option value="credit">Credit</option>
+      <option value="debit">Debit</option>
+    </select>
+    <button onclick="addRecord()">Save Transaction</button>
 
-    <!-- Records -->
-    <div class="card">
-      <h2>📜 नोंदींचा इतिहास</h2>
-      <table>
-        <thead><tr><th>दिनांक</th><th>नाव</th><th>रक्कम</th><th>प्रकार</th></tr></thead>
-        <tbody id="record-list"></tbody>
-      </table>
-    </div>
+    <!-- Records Table -->
+    <h3>Transaction History</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Amount</th>
+        </tr>
+      </thead>
+      <tbody id="records"></tbody>
+    </table>
   </div>
-
-  <!-- Toast -->
-  <div id="toast" class="toast"></div>
 
   <!-- Firebase -->
   <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-app.js";
-    import { getFirestore, collection, addDoc, getDocs, serverTimestamp, query, orderBy } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-firestore.js";
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+    import { getDatabase, ref, push, onChildAdded } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-database.js";
 
+    // Firebase Config
     const firebaseConfig = {
       apiKey: "AIzaSyC4TRM5wNy3BzXV9keTmJmgnkJOe4WRKLA",
       authDomain: "nextgen-bisshi.firebaseapp.com",
+      databaseURL: "https://nextgen-bisshi-default-rtdb.asia-southeast1.firebasedatabase.app",
       projectId: "nextgen-bisshi",
       storageBucket: "nextgen-bisshi.firebasestorage.app",
       messagingSenderId: "180688376272",
@@ -121,255 +139,59 @@
     };
 
     const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
+    const db = getDatabase(app);
 
-    // Toast
-    function showToast(msg, color="#333") {
-      const toast=document.getElementById("toast");
-      toast.innerText=msg;
-      toast.style.background=color;
-      toast.className="toast show";
-      setTimeout(()=>{ toast.className=toast.className.replace("show",""); },2500);
+    let totalBalance = 0;
+    let remainingBalance = 0;
+
+    function updateBalance() {
+      document.getElementById("totalBalance").innerText = totalBalance;
+      document.getElementById("remainingBalance").innerText = remainingBalance;
     }
 
-    // Add Record
-    async function addRecord() {
-      const date = document.getElementById("record-date").value;
-      const name = document.getElementById("record-name").value;
-      const amount = parseFloat(document.getElementById("record-amount").value);
-      const type = document.getElementById("record-type").value;
+    window.addRecord = function() {
+      const date = document.getElementById("date").value;
+      const name = document.getElementById("name").value;
+      const amount = parseFloat(document.getElementById("amount").value);
+      const type = document.getElementById("type").value;
 
-      if (!date || !name || !amount || !type) {
-        showToast("⚠️ कृपया सर्व माहिती भरा","#e74c3c");
-        return;
+      if (!date || !name || isNaN(amount) || amount <= 0) {
+        return alert("Please fill all fields correctly!");
       }
 
-      await addDoc(collection(db,"records"),{
-        date,name,amount,type,time:serverTimestamp()
-      });
+      // Balance Calculation
+      if (type === "credit") {
+        totalBalance += amount;
+        remainingBalance += amount;
+      } else if (type === "debit") {
+        remainingBalance -= amount;
+      }
 
-      document.getElementById("record-date").value="";
-      document.getElementById("record-name").value="";
-      document.getElementById("record-amount").value="";
-      document.getElementById("record-type").value="credit";
+      updateBalance();
 
-      showToast("✅ नोंद जतन झाली","#27ae60");
-      loadRecords();
-    }
+      // Save to Firebase
+      push(ref(db, "transactions"), { date, name, type, amount });
 
-    // Load Records + Balance
-    async function loadRecords() {
-      const q=query(collection(db,"records"),orderBy("time","desc"));
-      const snapshot=await getDocs(q);
-      const list=document.getElementById("record-list"); list.innerHTML="";
-      let totalCredit=0, totalDebit=0;
-      snapshot.forEach(doc=>{
-        const r=doc.data();
-        if(r.type==="credit"){ totalCredit += r.amount; }
-        else { totalDebit += r.amount; }
-        const tr=document.createElement("tr");
-        tr.innerHTML=`<td>${r.date}</td>
-                      <td>${r.name}</td>
-                      <td>₹${r.amount}</td>
-                      <td class="type-${r.type}">${r.type==="credit"?"आवक":"खर्च"}</td>`;
-        list.appendChild(tr);
-      });
-      document.getElementById("total-credit").innerText="₹"+totalCredit;
-      document.getElementById("total-debit").innerText="₹"+totalDebit;
-      document.getElementById("total-balance").innerText="₹"+(totalCredit-totalDebit);
-    }
-
-    // Button bind
-    document.getElementById("save-btn").addEventListener("click",addRecord);
-
-    loadRecords();
-  </script>
-</body>
-</html><!DOCTYPE html>
-<html lang="mr">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>🚩 NextGen Bisshi 🚩</title>
-  <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-  <style>
-    body { margin:0; font-family:"Poppins",sans-serif; background:#f7f9fb; color:#2c3e50; }
-    /* Header */
-    .header {
-      background:#2c3e50; color:white; padding:15px; text-align:center;
-      font-weight:600; font-size:1.4rem; box-shadow:0 2px 5px rgba(0,0,0,0.15);
-    }
-    .header img { height:40px; vertical-align:middle; margin-right:10px; }
-    /* Container */
-    .container { padding:20px; max-width:1100px; margin:auto; }
-    /* Summary Cards */
-    .summary { display:flex; gap:15px; flex-wrap:wrap; margin-bottom:20px; }
-    .card-summary {
-      flex:1; min-width:200px; background:#fff; padding:20px; border-radius:12px;
-      text-align:center; font-size:1.1rem; font-weight:600; box-shadow:0 2px 6px rgba(0,0,0,0.05);
-    }
-    .credit { border-top:5px solid #27ae60; color:#27ae60; }
-    .debit { border-top:5px solid #e74c3c; color:#e74c3c; }
-    .balance { border-top:5px solid #2980b9; color:#2980b9; }
-    /* Input Card */
-    .card {
-      background:#fff; padding:20px; border-radius:12px;
-      margin-bottom:20px; box-shadow:0 2px 6px rgba(0,0,0,0.05);
-    }
-    h2 { margin:0 0 15px; font-size:1.1rem; font-weight:600; color:#34495e; }
-    input, select, button {
-      width:100%; padding:12px; margin:8px 0; border:1px solid #ccc; border-radius:6px; font-size:1rem;
-      font-family:"Poppins",sans-serif;
-    }
-    button {
-      background:#27ae60; color:white; border:none; cursor:pointer; font-weight:600;
-      transition:all 0.2s ease;
-    }
-    button:hover { background:#219150; }
-    /* Table */
-    table { width:100%; border-collapse:collapse; margin-top:10px; background:#fff; }
-    th, td {
-      padding:12px; border:1px solid #eee; text-align:center; font-size:0.95rem;
-    }
-    th { background:#f4f6f9; color:#34495e; }
-    tr:nth-child(even) { background:#fafafa; }
-    .type-credit { color:#27ae60; font-weight:600; }
-    .type-debit { color:#e74c3c; font-weight:600; }
-    /* Toast */
-    .toast {
-      visibility:hidden; min-width:200px; margin-left:-100px; background:#333; color:#fff;
-      text-align:center; border-radius:6px; padding:12px; position:fixed; z-index:1;
-      left:50%; bottom:30px; font-size:0.9rem; opacity:0; transition:opacity 0.5s, bottom 0.5s;
-    }
-    .toast.show {
-      visibility:visible; opacity:1; bottom:50px;
-    }
-    /* Responsive */
-    @media(max-width:600px){
-      .summary { flex-direction:column; }
-      th, td { padding:8px; font-size:0.85rem; }
-    }
-  </style>
-</head>
-<body>
-  <!-- Header -->
-  <div class="header">
-    <img src="IMG_0161" alt="Logo"> 🚩 NextGen Bisshi 🚩
-  </div>
-
-  <div class="container">
-    <!-- Summary -->
-    <div class="summary">
-      <div class="card-summary credit">एकूण आवक (Credit): <br><span id="total-credit">₹0</span></div>
-      <div class="card-summary debit">एकूण खर्च (Debit): <br><span id="total-debit">₹0</span></div>
-      <div class="card-summary balance">शिल्लक (Balance): <br><span id="total-balance">₹0</span></div>
-    </div>
-
-    <!-- Add Record -->
-    <div class="card">
-      <h2>➕ नवीन नोंद जोडा</h2>
-      <input type="date" id="record-date">
-      <input type="text" id="record-name" placeholder="नाव लिहा">
-      <input type="number" id="record-amount" placeholder="रक्कम (₹)">
-      <select id="record-type">
-        <option value="credit">आवक (Credit)</option>
-        <option value="debit">खर्च (Debit)</option>
-      </select>
-      <button id="save-btn">💾 जतन करा</button>
-    </div>
-
-    <!-- Records -->
-    <div class="card">
-      <h2>📜 नोंदींचा इतिहास</h2>
-      <table>
-        <thead><tr><th>दिनांक</th><th>नाव</th><th>रक्कम</th><th>प्रकार</th></tr></thead>
-        <tbody id="record-list"></tbody>
-      </table>
-    </div>
-  </div>
-
-  <!-- Toast -->
-  <div id="toast" class="toast"></div>
-
-  <!-- Firebase -->
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-app.js";
-    import { getFirestore, collection, addDoc, getDocs, serverTimestamp, query, orderBy } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-firestore.js";
-
-    const firebaseConfig = {
-      apiKey: "AIzaSyC4TRM5wNy3BzXV9keTmJmgnkJOe4WRKLA",
-      authDomain: "nextgen-bisshi.firebaseapp.com",
-      projectId: "nextgen-bisshi",
-      storageBucket: "nextgen-bisshi.firebasestorage.app",
-      messagingSenderId: "180688376272",
-      appId: "1:180688376272:web:4a9386d3f35945a12729d5",
-      measurementId: "G-VQ88TQ68LJ"
+      // Clear inputs
+      document.getElementById("date").value = "";
+      document.getElementById("name").value = "";
+      document.getElementById("amount").value = "";
+      document.getElementById("type").value = "credit";
     };
 
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
+    // Fetch Records
+    onChildAdded(ref(db, "transactions"), snapshot => {
+      const data = snapshot.val();
+      const row = `<tr>
+        <td>${data.date}</td>
+        <td>${data.name}</td>
+        <td class="${data.type === 'credit' ? 'credit' : 'debit'}">${data.type}</td>
+        <td class="${data.type === 'credit' ? 'credit' : 'debit'}">₹${data.amount}</td>
+      </tr>`;
+      document.getElementById("records").innerHTML += row;
+    });
 
-    // Toast
-    function showToast(msg, color="#333") {
-      const toast=document.getElementById("toast");
-      toast.innerText=msg;
-      toast.style.background=color;
-      toast.className="toast show";
-      setTimeout(()=>{ toast.className=toast.className.replace("show",""); },2500);
-    }
-
-    // Add Record
-    async function addRecord() {
-      const date = document.getElementById("record-date").value;
-      const name = document.getElementById("record-name").value;
-      const amount = parseFloat(document.getElementById("record-amount").value);
-      const type = document.getElementById("record-type").value;
-
-      if (!date || !name || !amount || !type) {
-        showToast("⚠️ कृपया सर्व माहिती भरा","#e74c3c");
-        return;
-      }
-
-      await addDoc(collection(db,"records"),{
-        date,name,amount,type,time:serverTimestamp()
-      });
-
-      document.getElementById("record-date").value="";
-      document.getElementById("record-name").value="";
-      document.getElementById("record-amount").value="";
-      document.getElementById("record-type").value="credit";
-
-      showToast("✅ नोंद जतन झाली","#27ae60");
-      loadRecords();
-    }
-
-    // Load Records + Balance
-    async function loadRecords() {
-      const q=query(collection(db,"records"),orderBy("time","desc"));
-      const snapshot=await getDocs(q);
-      const list=document.getElementById("record-list"); list.innerHTML="";
-      let totalCredit=0, totalDebit=0;
-      snapshot.forEach(doc=>{
-        const r=doc.data();
-        if(r.type==="credit"){ totalCredit += r.amount; }
-        else { totalDebit += r.amount; }
-        const tr=document.createElement("tr");
-        tr.innerHTML=`<td>${r.date}</td>
-                      <td>${r.name}</td>
-                      <td>₹${r.amount}</td>
-                      <td class="type-${r.type}">${r.type==="credit"?"आवक":"खर्च"}</td>`;
-        list.appendChild(tr);
-      });
-      document.getElementById("total-credit").innerText="₹"+totalCredit;
-      document.getElementById("total-debit").innerText="₹"+totalDebit;
-      document.getElementById("total-balance").innerText="₹"+(totalCredit-totalDebit);
-    }
-
-    // Button bind
-    document.getElementById("save-btn").addEventListener("click",addRecord);
-
-    loadRecords();
+    updateBalance();
   </script>
 </body>
 </html>
