@@ -1,61 +1,92 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="mr">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>NextGen Bisshi - Admin Dashboard</title>
+  <title>🚩 NextGen Bisshi 🚩</title>
   <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
   <style>
-    body { margin:0; font-family:"Poppins",sans-serif; background:#f9fafc; color:#2c3e50; }
-    /* Navbar */
-    .navbar {
-      background:#ffffff; padding:15px 30px; display:flex; justify-content:space-between; align-items:center;
-      box-shadow:0 2px 5px rgba(0,0,0,0.08); position:sticky; top:0; z-index:1000;
+    body { margin:0; font-family:"Poppins",sans-serif; background:#fff9f0; color:#2c3e50; }
+    /* Header */
+    .header {
+      background:#e74c3c; color:white; padding:15px; text-align:center;
+      font-weight:600; font-size:1.4rem; box-shadow:0 2px 5px rgba(0,0,0,0.1);
     }
-    .navbar h1 { font-size:1.2rem; margin:0; font-weight:600; color:#27ae60; }
+    .header img { height:40px; vertical-align:middle; margin-right:10px; }
     /* Container */
-    .container { padding:20px 30px; }
-    /* Card */
-    .card {
-      background:white; padding:20px; border-radius:10px; border:1px solid #eaeaea; margin-bottom:20px;
+    .container { padding:20px; max-width:1100px; margin:auto; }
+    /* Summary Cards */
+    .summary { display:flex; gap:15px; flex-wrap:wrap; margin-bottom:20px; }
+    .card-summary {
+      flex:1; min-width:200px; background:#fff; padding:20px; border-radius:12px; 
+      text-align:center; font-size:1.2rem; font-weight:600; border:2px solid;
     }
-    h2 { margin:0 0 15px; font-size:1.1rem; font-weight:600; }
-    input, button {
+    .credit { border-color:#27ae60; color:#27ae60; }
+    .debit { border-color:#e74c3c; color:#e74c3c; }
+    .balance { border-color:#2980b9; color:#2980b9; }
+    /* Input Card */
+    .card {
+      background:#fff; padding:20px; border-radius:12px; border:1px solid #ddd;
+      margin-bottom:20px; box-shadow:0 1px 4px rgba(0,0,0,0.05);
+    }
+    h2 { margin:0 0 15px; font-size:1.1rem; font-weight:600; color:#e74c3c; }
+    input, select, button {
       width:100%; padding:12px; margin:8px 0; border:1px solid #ccc; border-radius:6px; font-size:1rem;
       font-family:"Poppins",sans-serif;
     }
     button {
-      background:#27ae60; color:white; border:none; cursor:pointer; font-weight:500;
+      background:#e74c3c; color:white; border:none; cursor:pointer; font-weight:600;
     }
-    button:hover { background:#219150; }
+    button:hover { background:#c0392b; }
     /* Table */
     table { width:100%; border-collapse:collapse; margin-top:10px; }
     th, td {
-      padding:12px; border-bottom:1px solid #eaeaea; text-align:left;
+      padding:12px; border:1px solid #ddd; text-align:center; font-size:0.95rem;
     }
-    th { background:#f4f6f8; font-weight:600; }
-    tr:hover { background:#f9f9f9; }
+    th { background:#f9ecec; color:#e74c3c; }
+    tr:nth-child(even) { background:#fdf7f7; }
+    .type-credit { color:#27ae60; font-weight:600; }
+    .type-debit { color:#e74c3c; font-weight:600; }
+    /* Responsive */
+    @media(max-width:600px){
+      .summary { flex-direction:column; }
+      th, td { padding:8px; font-size:0.85rem; }
+    }
   </style>
 </head>
 <body>
-  <!-- Navbar -->
-  <div class="navbar">
-    <h1>NextGen Bisshi</h1>
+  <!-- Header -->
+  <div class="header">
+    <img src="IMG_0161" alt="Logo"> 🚩 NextGen Bisshi 🚩
   </div>
 
   <div class="container">
+    <!-- Summary -->
+    <div class="summary">
+      <div class="card-summary credit">एकूण आवक (Credit): <br><span id="total-credit">₹0</span></div>
+      <div class="card-summary debit">एकूण खर्च (Debit): <br><span id="total-debit">₹0</span></div>
+      <div class="card-summary balance">शिल्लक (Balance): <br><span id="total-balance">₹0</span></div>
+    </div>
+
     <!-- Add Record -->
     <div class="card">
-      <h2>➕ Add New Record</h2>
+      <h2>➕ नवीन नोंद जोडा</h2>
       <input type="date" id="record-date">
-      <input type="text" id="record-name" placeholder="Enter Name">
-      <input type="number" id="record-amount" placeholder="Enter Amount (₹)">
-      <button onclick="addRecord()">Save Record</button>
+      <input type="text" id="record-name" placeholder="नाव लिहा">
+      <input type="number" id="record-amount" placeholder="रक्कम (₹)">
+      <select id="record-type">
+        <option value="credit">आवक (Credit)</option>
+        <option value="debit">खर्च (Debit)</option>
+      </select>
+      <button onclick="addRecord()">💾 जतन करा</button>
+    </div>
 
-      <h2>📜 Records History</h2>
+    <!-- Records -->
+    <div class="card">
+      <h2>📜 नोंदींचा इतिहास</h2>
       <table>
-        <thead><tr><th>Date</th><th>Name</th><th>Amount</th></tr></thead>
+        <thead><tr><th>दिनांक</th><th>नाव</th><th>रक्कम</th><th>प्रकार</th></tr></thead>
         <tbody id="record-list"></tbody>
       </table>
     </div>
@@ -84,31 +115,42 @@
       const date = document.getElementById("record-date").value;
       const name = document.getElementById("record-name").value;
       const amount = parseFloat(document.getElementById("record-amount").value);
+      const type = document.getElementById("record-type").value;
 
-      if (!date || !name || !amount) return alert("⚠️ Please fill all fields");
+      if (!date || !name || !amount || !type) return alert("⚠️ कृपया सर्व माहिती भरा");
 
       await addDoc(collection(db,"records"),{
-        date,name,amount,time:serverTimestamp()
+        date,name,amount,type,time:serverTimestamp()
       });
 
       document.getElementById("record-date").value="";
       document.getElementById("record-name").value="";
       document.getElementById("record-amount").value="";
+      document.getElementById("record-type").value="credit";
 
       loadRecords();
     }
 
-    // Load Records
+    // Load Records + Balance
     async function loadRecords() {
       const q=query(collection(db,"records"),orderBy("time","desc"));
       const snapshot=await getDocs(q);
       const list=document.getElementById("record-list"); list.innerHTML="";
+      let totalCredit=0, totalDebit=0;
       snapshot.forEach(doc=>{
         const r=doc.data();
+        if(r.type==="credit"){ totalCredit += r.amount; }
+        else { totalDebit += r.amount; }
         const tr=document.createElement("tr");
-        tr.innerHTML=`<td>${r.date}</td><td>${r.name}</td><td>₹${r.amount}</td>`;
+        tr.innerHTML=`<td>${r.date}</td>
+                      <td>${r.name}</td>
+                      <td>₹${r.amount}</td>
+                      <td class="type-${r.type}">${r.type==="credit"?"आवक":"खर्च"}</td>`;
         list.appendChild(tr);
       });
+      document.getElementById("total-credit").innerText="₹"+totalCredit;
+      document.getElementById("total-debit").innerText="₹"+totalDebit;
+      document.getElementById("total-balance").innerText="₹"+(totalCredit-totalDebit);
     }
 
     loadRecords();
