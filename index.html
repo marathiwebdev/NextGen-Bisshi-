@@ -1,222 +1,101 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>NextGen Bisshi</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NextGen Bisshi - Admin</title>
   <style>
-    body { margin:0; font-family: "Segoe UI", Arial, sans-serif; background:#f9fafb; color:#333; }
-    header { background:#004643; color:white; padding:15px 20px; display:flex; justify-content:space-between; align-items:center; }
-    header h1 { margin:0; font-size:1.3rem; }
-    header button { background:#e16162; color:white; border:none; padding:8px 16px; border-radius:6px; cursor:pointer; }
-    .container { max-width:1100px; margin:20px auto; padding:10px; }
-    .card { background:white; border-radius:10px; box-shadow:0 4px 12px rgba(0,0,0,0.1); padding:20px; margin-bottom:20px; }
-    h2,h3,h4 { margin-top:0; color:#004643; }
-    input, button, select { width:100%; padding:12px; margin:10px 0; border-radius:6px; border:1px solid #ccc; font-size:1rem; }
-    button { cursor:pointer; transition:0.2s; }
-    button:hover { opacity:0.9; }
-    .btn-primary { background:#2a9d8f; color:white; border:none; }
-    .btn-secondary { background:#e9c46a; border:none; }
-    .btn-danger { background:#e16162; color:white; border:none; }
-    .grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:20px; }
-    .profile p { margin:6px 0; }
+    body { margin:0; font-family: "Segoe UI", Arial, sans-serif; background:#f5f7fa; }
+    .sidebar {
+      width:220px; background:#2c3e50; color:white; position:fixed; top:0; bottom:0; left:0;
+      display:flex; flex-direction:column; padding:20px 10px;
+    }
+    .sidebar h2 { margin:0 0 20px; font-size:1.2rem; text-align:center; }
+    .sidebar a {
+      color:white; padding:12px; margin:5px 0; text-decoration:none; display:block; border-radius:6px;
+    }
+    .sidebar a:hover { background:#34495e; }
+    .main { margin-left:240px; padding:20px; }
+    header { background:white; padding:15px 20px; border-radius:8px; box-shadow:0 2px 5px rgba(0,0,0,0.1); margin-bottom:20px; }
+    h1 { margin:0; font-size:1.5rem; color:#2c3e50; }
+    .card {
+      background:white; padding:20px; border-radius:10px;
+      box-shadow:0 2px 8px rgba(0,0,0,0.1); margin-bottom:20px;
+    }
+    input, textarea, button {
+      width:100%; padding:12px; margin:10px 0; border-radius:6px; border:1px solid #ccc; font-size:1rem;
+    }
+    button {
+      background:#27ae60; color:white; border:none; cursor:pointer;
+    }
+    button:hover { background:#219150; }
     ul { padding-left:20px; }
-    .timer { font-weight:bold; color:#e16162; }
-    #login-form, #dashboard { display:none; }
-    #fund-section { margin-top:15px; padding:15px; border:1px dashed #ccc; border-radius:8px; background:#f4fdfc; }
+    .record-item { background:#f9fafc; padding:12px; border-radius:6px; margin-bottom:10px; border-left:5px solid #27ae60; }
+    @media(max-width:768px) {
+      .sidebar { width:100%; height:auto; position:relative; flex-direction:row; justify-content:space-around; }
+      .main { margin-left:0; }
+    }
   </style>
 </head>
 <body>
-  <header>
-    <h1>NextGen Bisshi</h1>
-    <button id="logout-btn" style="display:none;">Logout</button>
-  </header>
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <h2>📊 Admin</h2>
+    <a href="#dashboard">Dashboard</a>
+    <a href="#add">Add Record</a>
+    <a href="#history">History</a>
+    <a href="#settings">Settings</a>
+  </div>
 
-  <div class="container">
+  <!-- Main Content -->
+  <div class="main">
+    <header>
+      <h1>NextGen Bisshi - Admin Dashboard</h1>
+    </header>
 
-    <!-- Signup Form -->
-    <div class="card" id="signup-form">
-      <h2>Create Account</h2>
-      <input type="text" id="signup-name" placeholder="Full Name" />
-      <input type="text" id="signup-mobile" placeholder="Mobile Number" />
-      <input type="email" id="signup-email" placeholder="Email" />
-      <input type="password" id="signup-password" placeholder="Password" />
-      <button class="btn-primary" id="signup-btn">Signup</button>
+    <!-- Add Record -->
+    <div class="card" id="add">
+      <h2>➕ Add New Record</h2>
+      <input type="text" id="record-title" placeholder="Enter Title" />
+      <textarea id="record-message" placeholder="Enter Message"></textarea>
+      <button onclick="addRecord()">Send Record</button>
     </div>
 
-    <!-- Login Toggle -->
-    <div class="card" id="login-toggle">
-      <button class="btn-secondary" onclick="document.getElementById('login-form').style.display='block'; this.style.display='none';">Already have an account? Login</button>
-    </div>
-
-    <!-- Login Form -->
-    <div class="card" id="login-form">
-      <h2>Login</h2>
-      <input type="email" id="login-email" placeholder="Email" />
-      <input type="password" id="login-password" placeholder="Password" />
-      <button class="btn-primary" id="login-btn">Login</button>
-    </div>
-
-    <!-- Dashboard -->
-    <div id="dashboard">
-      <div class="grid">
-        <!-- Profile -->
-        <div class="card profile">
-          <h3>👤 Profile</h3>
-          <p><b>Name:</b> <span id="user-name"></span></p>
-          <p><b>Email:</b> <span id="user-email"></span></p>
-          <p><b>Mobile:</b> <span id="user-mobile"></span></p>
-        </div>
-
-        <!-- Contribution History -->
-        <div class="card">
-          <h3>📜 Contribution History</h3>
-          <ul id="contributions"></ul>
-        </div>
-
-        <!-- Payout -->
-        <div class="card">
-          <h3>🎉 Next Payout</h3>
-          <p id="payout-date">15 Sept 2025</p>
-        </div>
-
-        <!-- Add Fund -->
-        <div class="card">
-          <h3>💰 Add Fund</h3>
-          <p>Send via UPI:</p>
-          <p><b id="upi-id">9112693374@kotak811</b></p>
-          <button class="btn-secondary" id="copy-upi">📋 Copy UPI ID</button>
-          <button class="btn-primary" id="start-fund">Start Contribution</button>
-          <div id="fund-section" style="display:none;">
-            <p class="timer" id="countdown">10:00</p>
-            <input type="text" id="txn-id" placeholder="Enter Transaction ID" />
-            <input type="file" id="screenshot" accept="image/*" />
-            <button class="btn-primary" id="submit-fund">Submit</button>
-          </div>
-        </div>
-      </div>
+    <!-- Records History -->
+    <div class="card" id="history">
+      <h2>📜 Records History</h2>
+      <ul id="record-list"></ul>
     </div>
   </div>
 
-  <!-- Firebase Script -->
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-    import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-    import { getFirestore, setDoc, doc, getDoc, updateDoc, arrayUnion } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+  <script>
+    let records = [];
 
-    // Config
-    const firebaseConfig = {
-      apiKey: "AIzaSyC4TRM5wNy3BzXV9keTmJmgnkJOe4WRKLA",
-      authDomain: "nextgen-bisshi.firebaseapp.com",
-      projectId: "nextgen-bisshi",
-      storageBucket: "nextgen-bisshi.appspot.com",
-      messagingSenderId: "180688376272",
-      appId: "1:180688376272:web:4a9386d3f35945a12729d5",
-      measurementId: "G-VQ88TQ68LJ"
-    };
+    function addRecord() {
+      const title = document.getElementById("record-title").value;
+      const message = document.getElementById("record-message").value;
+      if (!title || !message) { alert("Fill all fields"); return; }
 
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    const db = getFirestore(app);
+      const record = { title, message, time: new Date().toLocaleString() };
+      records.unshift(record); // add to beginning
+      renderRecords();
 
-    // Signup
-    document.getElementById("signup-btn").addEventListener("click", async () => {
-      const name = document.getElementById("signup-name").value;
-      const mobile = document.getElementById("signup-mobile").value;
-      const email = document.getElementById("signup-email").value;
-      const password = document.getElementById("signup-password").value;
-      try {
-        const userCred = await createUserWithEmailAndPassword(auth, email, password);
-        await setDoc(doc(db, "users", userCred.user.uid), { name, mobile, email, contributions: [] });
-        alert("✅ Signup successful! Now login.");
-      } catch (err) { alert(err.message); }
-    });
+      document.getElementById("record-title").value = "";
+      document.getElementById("record-message").value = "";
 
-    // Login
-    document.getElementById("login-btn").addEventListener("click", async () => {
-      const email = document.getElementById("login-email").value;
-      const password = document.getElementById("login-password").value;
-      try {
-        await signInWithEmailAndPassword(auth, email, password);
-      } catch (err) { alert(err.message); }
-    });
-
-    // Logout
-    document.getElementById("logout-btn").addEventListener("click", async () => {
-      await signOut(auth);
-    });
-
-    // Copy UPI
-    document.getElementById("copy-upi").addEventListener("click", () => {
-      navigator.clipboard.writeText(document.getElementById("upi-id").innerText);
-      alert("📋 UPI copied!");
-    });
-
-    // Start Fund
-    document.getElementById("start-fund").addEventListener("click", () => {
-      document.getElementById("fund-section").style.display = "block";
-      startCountdown(600);
-    });
-
-    // Submit Fund
-    document.getElementById("submit-fund").addEventListener("click", async () => {
-      const txnId = document.getElementById("txn-id").value;
-      if (!txnId) return alert("Enter Transaction ID");
-      const user = auth.currentUser;
-      if (user) {
-        await updateDoc(doc(db, "users", user.uid), { contributions: arrayUnion({ txnId, date: new Date().toLocaleString() }) });
-        alert("✅ Fund submitted!");
-        loadProfile(user.uid);
-      }
-    });
-
-    // Countdown
-    function startCountdown(sec) {
-      let remaining = sec;
-      const timerEl = document.getElementById("countdown");
-      const interval = setInterval(() => {
-        const m = String(Math.floor(remaining/60)).padStart(2,'0');
-        const s = String(remaining%60).padStart(2,'0');
-        timerEl.textContent = `${m}:${s}`;
-        if (--remaining < 0) { clearInterval(interval); timerEl.textContent="⏰ Expired"; }
-      },1000);
+      alert("✅ Record Added (Next: connect SMS/WhatsApp API)");
     }
 
-    // Load Profile
-    async function loadProfile(uid) {
-      const snap = await getDoc(doc(db,"users",uid));
-      if (snap.exists()) {
-        const d = snap.data();
-        document.getElementById("user-name").innerText = d.name;
-        document.getElementById("user-email").innerText = d.email;
-        document.getElementById("user-mobile").innerText = d.mobile;
-        const list = document.getElementById("contributions");
-        list.innerHTML="";
-        d.contributions.forEach(c=>{
-          const li=document.createElement("li");
-          li.textContent=`Txn ${c.txnId} | ${c.date}`;
-          list.appendChild(li);
-        });
-      }
+    function renderRecords() {
+      const list = document.getElementById("record-list");
+      list.innerHTML = "";
+      records.forEach(r => {
+        const li = document.createElement("li");
+        li.className = "record-item";
+        li.innerHTML = `<b>${r.title}</b><br>${r.message}<br><small>${r.time}</small>`;
+        list.appendChild(li);
+      });
     }
-
-    // Auth State
-    onAuthStateChanged(auth, user => {
-      if (user) {
-        document.getElementById("signup-form").style.display="none";
-        document.getElementById("login-toggle").style.display="none";
-        document.getElementById("login-form").style.display="none";
-        document.getElementById("dashboard").style.display="block";
-        document.getElementById("logout-btn").style.display="inline-block";
-        loadProfile(user.uid);
-      } else {
-        document.getElementById("signup-form").style.display="block";
-        document.getElementById("login-toggle").style.display="block";
-        document.getElementById("login-form").style.display="none";
-        document.getElementById("dashboard").style.display="none";
-        document.getElementById("logout-btn").style.display="none";
-      }
-    });
   </script>
 </body>
 </html>
